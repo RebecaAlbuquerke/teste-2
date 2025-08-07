@@ -1,0 +1,16 @@
+# Ignore geral do projeto
+node_modules
+dist
+.env
+.env.*  
+docker-data
+*.log
+
+# Ignore do Angular
+frontend/.angular/cache
+frontend/.angular/config.json
+
+# Ignore do NestJS
+backend/node_modules
+backend/dist
+backend/.env

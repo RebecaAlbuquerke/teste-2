@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # porta do RabbitMQ para o NestJS usar
+      - "15672:15672"  # painel de gerenciamento (web)
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/nestdb
+      - RABBITMQ_URL=amqp://user:pass@rabbitmq:5672
+
+volumes:
+  mongo_data:
